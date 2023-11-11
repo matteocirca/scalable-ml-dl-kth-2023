@@ -1,0 +1,6 @@
+[submodule "lab1/iris"]
+	path = lab1/iris
+	url = https://huggingface.co/spaces/matteocirca/iris
+[submodule "lab1/iris-monitor"]
+	path = lab1/iris-monitor
+	url = https://huggingface.co/spaces/matteocirca/iris-monitor
