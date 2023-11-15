@@ -2,3 +2,5 @@
 /lab1/.DS_Store
 
 /lab1/librdkafka.rb
+
+/lab1/__pycache__
