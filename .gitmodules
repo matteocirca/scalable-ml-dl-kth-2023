@@ -7,3 +7,6 @@
 [submodule "lab1/wine"]
 	path = lab1/wine
 	url = https://huggingface.co/spaces/matteocirca/wine
+[submodule "lab1/wine-monitor"]
+	path = lab1/wine-monitor
+	url = https://huggingface.co/spaces/matteocirca/wine
