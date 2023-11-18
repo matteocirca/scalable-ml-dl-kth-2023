@@ -37,17 +37,17 @@ The following is the infrastructure built to deploy task 2's pipeline.
 
 By executing the notebook `wine-eda-and-backfill-feature-group.ipynb`, the wine quality dataset is downloaded and analysis is performed, such as composition, distribution of values, and correlation between features.
 The dataset presents some peculiarity that we needed to address before proceeding: 
--  NaNs: Some values presented NaN values for some features. For simplicity, we decided to remove the 38 rows presenting this defect
--  Duplicated rows: The dataset presented 1168 duplicated rows, since this can affect the training quality we dropped them.
--  Quality: the label of the dataset seems to be meant to have values in the range [0,10], but there is a strong imbalance between the present values, with some values not making it into the dataset at all or with very few samples. To address this problem, we decided to binarize the labels into "Good" quality (quality $\ge$ 6) and "Bad quality" (quality $\lt$ 6).
--  Wine Type: the dataset presents a categorical feature to express the type of wine ("white" or "red"). We substituted the two values with a 0-1 value.
+-  **NaNs**: Some values presented NaN values for some features. For simplicity, we decided to remove the 38 rows presenting this defect
+-  **Duplicated rows**: The dataset presented 1168 duplicated rows, since this can affect the training quality we dropped them.
+-  **Quality**: the label of the dataset seems to be meant to have values in the range [0,10], but there is a strong imbalance between the present values, with some values not making it into the dataset at all or with very few samples. To address this problem, we decided to binarize the labels into "Good" quality (quality $\ge$ 6) and "Bad quality" (quality $\lt$ 6).
+-  **Wine Types**: the dataset presents a categorical feature to express the type of wine ("white" or "red"). We substituted the two values with a 0-1 value.
 
 Finally, a [Feature Group](https://docs.hopsworks.ai/feature-store-api/2.5.9/generated/feature_group/) is created, with [Expectations](https://docs.hopsworks.ai/feature-store-api/2.5.9/generated/api/expectation_api/) in order to validate the data, and uploaded to Hopsworks.
 
 ### 2.1.2 Creating synthetic wines
 
 To simulate the periodic arrival of new entries in the dataset, the script `wine-feature-pipeline-daily.py` creates and adds to the Feature Group created in Section 2.1.1 new wines generated using random values.
-Since the number of samples per features is high enough, it is possible to apply the [Central Limit Theorem](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5370305/) and assume that every feature's distribution can be approximated to a distribution $\mathcal{X}\sim\mathcal{N}(\mu,\sigma^2)$, with $\mu$ the mean and $\sigma^2$ the standard deviation of the feature's values. Because different wine types can highly impact the values of the features, the upper-cited method is used taking into account the type of wine (computing different means and standard deviations based on the type).
+Since the number of samples per features is high enough, it is possible to apply the [Central Limit Theorem](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5370305/) and assume that every feature's distribution can be approximated to a distribution $\mathcal{X}\sim\mathcal{N}(\mu,\sigma^2)$, with $\mu$ the mean and $\sigma^2$ the standard deviation of the feature's values, sampling the values for each feature from the respective distribution. Because different wine types can highly impact the values of the features, the upper-cited method is used taking into account the type of wine (computing different means and standard deviations based on the type).
 Differently from the script used for the iris flower generation, it is not possible to know in advance the label of the wine generated. To address this problem we run an inference task on the generated features and use the predictions as labels for the new synthetic wines. 
 This script is finally uploaded on [Modal](https://modal.com/) and runs daily. 
 
