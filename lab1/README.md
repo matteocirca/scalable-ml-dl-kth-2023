@@ -48,13 +48,13 @@ Finally, a [Feature Group](https://docs.hopsworks.ai/feature-store-api/2.5.9/gen
 
 To simulate the periodic arrival of new entries in the dataset, the script `wine-feature-pipeline-daily.py` creates and adds to the Feature Group created in Section 2.1.1 new wines generated using random values.
 Since the number of samples per features is high enough, it is possible to apply the [Central Limit Theorem](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5370305/) and assume that every feature's distribution can be approximated to a distribution $\mathcal{X}\sim\mathcal{N}(\mu,\sigma^2)$, with $\mu$ the mean and $\sigma^2$ the standard deviation of the feature's values. Because different wine types can highly impact the values of the features, the upper-cited method is used taking into account the type of wine (computing different means and standard deviations based on the type).
-Differently from the script used for the iris flower generation, it is not possible to know in advance the label of the wine generated. To address this problem we run an inference task on the generated features, and use the prediction as label for the new synthetic wine. 
-This script is finally uploaded on [Modal](https://modal.com/) and run daily. 
+Differently from the script used for the iris flower generation, it is not possible to know in advance the label of the wine generated. To address this problem we run an inference task on the generated features and use the predictions as labels for the new synthetic wines. 
+This script is finally uploaded on [Modal](https://modal.com/) and runs daily. 
 
 ## 2.2 Training Pipeline
 ### 2.2.1 Training, Testing and Registering the model
 
-By executing the notebook `iris-training-pipeline.ipynb`, the feature group created in the previous step is downloaded and used in order to train a [KNN classifier](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm). However, [a study on the same dataset](https://www.kaggle.com/code/wumanandpat/wine-quality-finding-the-minimal-model) demonstrated that the minimal error in the model is obtained using a [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting) Classifier, so we decided to perform the classification tasks using the latter model.
+By executing the notebook `wine-training-pipeline.ipynb`, the feature group created in the previous step is downloaded and used in order to train a [KNN classifier](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm). However, [a study on the same dataset](https://www.kaggle.com/code/wumanandpat/wine-quality-finding-the-minimal-model) demonstrated that the minimal error in the model is obtained using a [Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting) Classifier, so we decided to perform the classification tasks using the latter model.
 
 Once the model is trained, performance metrics as well as the confusion matrix of the prediction are plotted. Finally, the model and performance metrics are exported and uploaded on Hopsworks's [Model Registry](https://docs.hopsworks.ai/3.1/concepts/mlops/registry/).
 
@@ -68,8 +68,8 @@ This script, as for the one in Section 2.1.2 is deployed on Modal in order to ru
 ### 2.3.2 Deploying on Hugging Face
 
 To access the infrastructure that we deployed in the previous sections, [spaces](https://huggingface.co/docs/hub/spaces-overview) were deployed on HuggingFace in order to run the model created. 
-Two spaces were created: [iris](https://matteocirca-wine.hf.space/) and [iris-monitor](https://matteocirca-wine-monitor.hf.space/).
-The first acts as an interface where the user can input values for each of the features and get a prediction on wether those features reflect a good or bad wine, the latter shows the monitoring for inference on wines created in Section 2.1.2.
+Two spaces were created: [wine](https://matteocirca-wine.hf.space/) and [wine-monitor](https://matteocirca-wine-monitor.hf.space/).
+The first acts as an interface where the user can input values for each of the features and get a prediction on whether those features reflect a good or bad wine, the latter shows the monitoring for inference on wines created in Section 2.1.2.
 
 
 
