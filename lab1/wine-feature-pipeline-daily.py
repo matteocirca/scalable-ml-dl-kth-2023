@@ -5,9 +5,9 @@ LOCAL=False
 
 if LOCAL == False:
    stub = modal.Stub("wine_daily")
-   image = modal.Image.debian_slim().pip_install(["hopsworks"])
+   image = modal.Image.debian_slim().pip_install(["hopsworks","joblib","scikit-learn==1.1.1"])
 
-   @stub.function(image=image, schedule=modal.Period(days=1), secret=modal.Secret.from_name("wine"))
+   @stub.function(image=image, schedule=modal.Period(days=1), secret=modal.Secret.from_name("iris"))
    def f():
        g()
 
@@ -53,14 +53,17 @@ def g():
     fs = project.get_feature_store()
     
     mr = project.get_model_registry()
-    model = mr.get_model("wine_model", version=1)
+    model = mr.get_model("wine_model", version=2)
     model_dir = model.download()
     model = joblib.load(model_dir + "/wine_model.pkl")
 
-    wine_fg = fs.get_feature_group(name="wine", version=3)
+    wine_fg = fs.get_feature_group(name="wine", version=4)
     df = wine_fg.read()
 
     wine_df = get_random_wine(df, model)
+
+    # change type of "type" column to bigint
+    wine_df['type'] = wine_df['type'].astype('int64')
 
     wine_fg.insert(wine_df)
 
