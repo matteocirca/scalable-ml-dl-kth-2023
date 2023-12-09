@@ -1,6 +1,10 @@
 .DS_Store
+
 /lab1/.DS_Store
-
 /lab1/librdkafka.rb
-
 /lab1/__pycache__
+
+/lab2/common_voice
+/lab2/whisper-small-it
+/lab2/whisper-small-it-2
+/lab2/model

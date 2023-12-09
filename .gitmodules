@@ -10,3 +10,9 @@
 [submodule "lab1/wine-monitor"]
 	path = lab1/wine-monitor
 	url = https://huggingface.co/spaces/matteocirca/wine
+[submodule "lab2/ASR-app"]
+	path = lab2/ASR-app
+	url = https://huggingface.co/spaces/matteocirca/ASR-app
+[submodule "lab2/ASR-app-pro"]
+	path = lab2/ASR-app-pro
+	url = https://huggingface.co/spaces/matteocirca/ASR-app-pro
